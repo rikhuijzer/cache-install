@@ -1,5 +1,5 @@
-name: 'cache-install'
-description: 'Cache installations from the Nix package manager'
+name: 'Cache Nix packages'
+description: 'Use the GitHub Actions cache for Nix packages'
 author: 'Rik Huijzer'
 inputs:
   key:

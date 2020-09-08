@@ -1,6 +1,6 @@
-# cache-install
+# Cache Nix packages
 
-This actions allows caching of installations from the Nix package manager to improve workflow execution time. 
+This actions allows caching of installations done via the [Nix package manager](https://nixos.org) to improve workflow execution time. 
 
 [![][tests-img]][tests-url]
 
@@ -9,7 +9,7 @@ However, sometimes the packages take a long time to compile or to download from 
 For example, this occurs with R packages and LaTeX.
 This GitHub Action speeds up the installation by simply caching the Nix store and the symlinks to the packages in the store.
 So, the installed packages are restored from the cache by copying back `/nix/store`, the symlinks to `/nix/store/*`, and some paths for the PATH environment variable.
-The cache uses the GitHub cache action: <https://github.com/actions/cache/>.
+This is based on the [GitHub Actions cache](https://github.com/actions/cache/).
 
 ## Example workflow
 
@@ -26,7 +26,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install LaTeX
-      uses: nix-actions/cache-install@v1.0.3
+      uses: nix-actions/cache-install@v1.0.4
       with:
         key: nix-${{ hashFiles('latex.nix') }}
         nix_file: 'latex.nix'
