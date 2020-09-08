@@ -1,4 +1,4 @@
-name: 'Cache Nix packages'
+name: 'Cache install Nix packages'
 description: 'Use the GitHub Actions cache for Nix packages'
 author: 'Rik Huijzer'
 inputs:
