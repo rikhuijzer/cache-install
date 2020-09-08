@@ -17,3 +17,6 @@ outputs:
 runs:
   using: 'node12'
   main: 'src/main.js'
+branding:
+  icon: 'arrow-down'
+  color: 'blue'
