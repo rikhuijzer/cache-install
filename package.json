@@ -1,0 +1,24 @@
+{
+  "name": "cache-install",
+  "version": "1.0.0",
+  "description": "Install packages via the Nix package manager or via the GitHub Actions cache",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nix-actions/cache-install.git"
+  },
+  "keywords": [
+    "actions",
+    "nix",
+    "install",
+    "cache"
+  ],
+  "author": "Rik Huijzer",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/cache": "^1.0.2",
+    "@actions/core": "^1.2.5",
+    "@actions/exec": "^1.0.4",
+    "@actions/io": "^1.0.1"
+  }
+}

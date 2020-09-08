@@ -1,0 +1,117 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+
+  test-save-simple:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci 
+
+    - name: Save cache
+      uses: ./
+      with:
+        key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/simple.nix'
+
+    - name: Test whether simple.nix is installed 
+      run: which hello
+
+  test-restore-simple:
+    needs: test-save-simple
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci
+
+    - name: Restore cache
+      uses: ./
+      with:
+        key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/simple.nix'
+
+    - name: Test whether simple.nix is installed 
+      run: hello
+
+    - name: Test whether nix-shell is available
+      run: nix-shell -p nix-info --run "nix-info -m"
+
+      
+
+  test-save-latex:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci 
+
+    - name: Save cache
+      uses: ./
+      with:
+        key: Test-LaTeX-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/latex.nix'
+
+    - name: Test whether latex.nix is installed 
+      run: which pdfcrop
+
+  test-restore-latex:
+    needs: test-save-latex
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci 
+
+    - name: Restore cache
+      uses: ./
+      with:
+        key: Test-LaTeX-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/latex.nix'
+
+    - name: Test whether latex.nix is installed 
+      run: which pdfcrop
+
+
+
+  test-save-julia:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci 
+
+    - name: Save cache
+      uses: ./
+      with:
+        key: Test-Julia-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/julia.nix'
+
+    - name: Test whether julia.nix is installed 
+      run: julia --color=yes -e 'using Pkg; Pkg.add("RCall"); using RCall; R"library(ggplot2)"'
+
+  test-restore-julia:
+    needs: test-save-julia
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - run: npm ci 
+
+    - name: Restore cache
+      uses: ./
+      with:
+        key: Test-Julia-${{ runner.os }}-${{ github.run_id }}
+        nix_file: 'test/julia.nix'
+
+    - name: Test whether julia.nix is installed 
+      run: julia --color=yes -e 'using Pkg; Pkg.add("RCall"); using RCall; R"library(ggplot2)"'

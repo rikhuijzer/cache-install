@@ -1,0 +1,19 @@
+name: 'Cache'
+description: 'Nix install'
+author: 'Rik Huijzer'
+inputs:
+  key:
+    description: 'An explicit key for restoring and saving the cache'
+    required: true
+  nix_version: 
+    description: 'Nix version, defaults to `nixos-unstable`.'
+    default: 'nixos-unstable'
+  nix_file:
+    description: 'Nix file, defaults to `default.nix`.'
+    default: 'default.nix'
+outputs:
+  cache-hit:
+    description: 'A boolean value to indicate an exact match was found for the primary key'
+runs:
+  using: 'node12'
+  main: 'src/main.js'
