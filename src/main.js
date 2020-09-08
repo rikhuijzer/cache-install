@@ -8,7 +8,7 @@ const key = core.getInput('key', { required: true})
 
 async function myexec(script, args) {
   var srcDir = path.dirname(__filename)
-  await exec.exec(script, args)
+  await exec.exec(path.join(srcDir, script), args)
 }
 
 function printInfo(s) {
