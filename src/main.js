@@ -2,8 +2,14 @@ const cache = require('@actions/cache');
 const core = require('@actions/core');
 const exec = require('@actions/exec');
 const fs = require('fs');
+const path = require('path');
 
 const key = core.getInput('key', { required: true})
+
+async function exec(script, args) {
+  var srcDir = path.dirname(__filename)
+  await exec.exec(script, args)
+}
 
 function printInfo(s) {
   console.log('\x1b[34m', s, '\x1b[0m')
@@ -40,23 +46,23 @@ async function installWithNix(cacheKey) {
   // Doing this in a separate step to let Bash load the env vars in the next step.
   if (cacheKey === undefined) {
     printInfo('Installing with Nix')
-    await exec.exec('src/core.sh', ['install-with-nix'])
+    await exec('core.sh', ['install-with-nix'])
   } else {
     printInfo('Installing from cache')
-    await exec.exec('src/core.sh', ['install-from-cache'])
+    await exec('core.sh', ['install-from-cache'])
   }
 }
 
 (async function run() {
   printInfo('Preparing restore')
-  await exec.exec('src/core.sh', ['prepare-restore'])
+  await exec('core.sh', ['prepare-restore'])
 
   const cacheKey = await restoreCache()
 
   await installWithNix(cacheKey)
 
   printInfo('Preparing save')
-  await exec.exec('src/core.sh', ['prepare-save'])
+  await exec('core.sh', ['prepare-save'])
 
   await saveCache(cacheKey)
 
