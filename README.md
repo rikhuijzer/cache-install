@@ -26,7 +26,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install LaTeX
-      uses: nix-actions/cache-install
+      uses: nix-actions/cache-install@v1.0.3
       with:
         key: nix-${{ hashFiles('latex.nix') }}
         nix_file: 'latex.nix'

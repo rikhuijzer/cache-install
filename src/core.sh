@@ -15,12 +15,10 @@ function install_nix {
   add_config() {
     echo "$1" | sudo tee -a /tmp/nix.conf >/dev/null
   }
-  # Set jobs to number of cores
   add_config "max-jobs = auto"
-  # Allow binary caches for runner user
-  add_config "trusted-users = root runner"
+  # Allow binary caches for runner user.
+  add_config "trusted-users = root $USER"
 
-  # Nix installer flags
   installer_options=(
     --daemon
     --daemon-user-count 4
@@ -52,7 +50,7 @@ function install_nix {
 
 function install_via_nix {
   if [[ -f "$INPUT_NIX_FILE" ]]; then
-    # Path is set correctly by set_paths, but only available outside this Action.
+    # Path is set correctly by set_paths but that is only available outside of this Action.
     PATH=/nix/var/nix/profiles/default/bin/:$PATH
     nix-env --install --file "$INPUT_NIX_FILE"
   else 
@@ -63,7 +61,7 @@ function install_via_nix {
 
 function set_paths {
   # These strange statements are called workflow commands for GitHub Actions.
-  # These updates to the path seem to be only available outside this Action.
+  # and seem to be only available outside of this Action.
   echo "::add-path::/nix/var/nix/profiles/per-user/$USER/profile/bin"
   echo "::add-path::/nix/var/nix/profiles/default/bin"
 }
@@ -78,11 +76,6 @@ function set_nix_path {
   echo "::set-env name=NIX_PATH::${INPUT_NIX_PATH}"
 }
 
-function install_dependencies {
-  sudo apt-get update
-  sudo apt-get install -y nodejs
-}
-
 function prepare {
   sudo mkdir -p --verbose /nix
   sudo chown --verbose "$USER:" /nix 
@@ -91,8 +84,6 @@ function prepare {
 function undo_prepare {
   sudo rm -rf /nix
 }
-
-# Lets try to avoid the Nix install completely when using the cache.
 
 TASK="$1"
 if [ "$TASK" == "prepare-restore" ]; then

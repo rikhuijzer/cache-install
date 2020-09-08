@@ -1,7 +1,7 @@
 {
   "name": "cache-install",
-  "version": "1.0.0",
-  "description": "Install packages via the Nix package manager or via the GitHub Actions cache",
+  "version": "1.0.3",
+  "description": "Cache packages installed via Nix via the GitHub Actions cache",
   "main": "src/index.js",
   "repository": {
     "type": "git",
