@@ -1,5 +1,5 @@
 name: 'Cache'
-description: 'Nix install'
+description: 'Cache installations from the Nix package manager'
 author: 'Rik Huijzer'
 inputs:
   key:
