@@ -1,4 +1,4 @@
-name: 'Cache'
+name: 'cache-install'
 description: 'Cache installations from the Nix package manager'
 author: 'Rik Huijzer'
 inputs:
