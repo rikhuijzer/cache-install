@@ -1,6 +1,6 @@
 {
-  "name": "Cache Nix packages",
-  "version": "1.0.4",
+  "name": "Cache install Nix packages",
+  "version": "1.0.5",
   "description": "Use the GitHub Actions cache for Nix packages",
   "main": "src/index.js",
   "repository": {

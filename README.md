@@ -1,4 +1,4 @@
-# Cache Nix packages
+# Cache install Nix packages
 
 This actions allows caching of installations done via the [Nix package manager](https://nixos.org) to improve workflow execution time. 
 
