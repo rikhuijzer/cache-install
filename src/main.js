@@ -35,6 +35,13 @@ async function restoreCache() {
   return cacheKey
 }
 
+async function prepareSave(cacheKey) {
+  if (cacheKey === undefined) {
+    printInfo('Preparing save')
+    await myexec('core.sh', ['prepare-save'])
+  }
+}
+
 async function saveCache(cacheKey) {
   if (cacheKey === undefined) {
     printInfo('Saving cache with key: ' + key)
@@ -43,7 +50,6 @@ async function saveCache(cacheKey) {
 }
 
 async function installWithNix(cacheKey) {
-  // Doing this in a separate step to let Bash load the env vars in the next step.
   if (cacheKey === undefined) {
     printInfo('Installing with Nix')
     await myexec('core.sh', ['install-with-nix'])
@@ -61,10 +67,9 @@ async function installWithNix(cacheKey) {
 
   await installWithNix(cacheKey)
 
-  printInfo('Preparing save')
-  await myexec('core.sh', ['prepare-save'])
+  await prepareSave(cacheKey)
 
   await saveCache(cacheKey)
 
-// Run the async function and exit on error.
+// Run the async function and exit when an exception occurs.
 })().catch(e => { console.error(e); process.exit(1) })
