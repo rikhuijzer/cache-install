@@ -6,10 +6,15 @@ This actions allows caching of installations done via the [Nix package manager](
 
 Installing packages via the Nix package manager is generally quite quick.
 However, sometimes the packages take a long time to compile or to download from their original sources.
-For example, this occurs with R packages and LaTeX.
-This GitHub Action speeds up the installation by simply caching the Nix store and the symlinks to the packages in the store.
-So, the installed packages are restored from the cache by copying back `/nix/store`, the symlinks to `/nix/store/*`, and some paths for the PATH environment variable.
-This is based on the [GitHub Actions cache](https://github.com/actions/cache/).
+For example, this occurs with R packages and LaTeX which are downloaded from respectively `CRAN` and `math.utah.edu`.
+This GitHub Action speeds up the installation by simply caching the Nix store and the symlinks to the packages in the store in the [GitHub Actions cache](https://github.com/actions/cache).
+So, the installed packages are restored from the cache by copying back `/nix/store`, the symlinks to `/nix/store/*` and some paths for the PATH environment variable.
+
+## Inputs
+
+- `key` - An explicit key for restoring and saving the cache
+- `nix_version` - Nix version, defaults to `nixos-unstable`
+- `nix_file` - Nix file, defaults to `default.nix`
 
 ## Example workflow
 
@@ -25,17 +30,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install LaTeX
+    - name: Cache install Nix packages
       uses: nix-actions/cache-install@v1.0.6
       with:
-        key: nix-${{ hashFiles('latex.nix') }}
-        nix_file: 'latex.nix'
+        key: nix-${{ hashFiles('mypackages.nix') }}
+        nix_file: 'mypackages.nix'
+
+    - name: Calculate some things
+      run: julia -e 'using MyPackage; MyPackage.calculate()'
 
     - name: Build LaTeX
       run: latexmk -f -pdf example.tex
+
+    - name: Build website
+      run: hugo --gc --minify
 ```
 
-where the file `latex.nix` contains
+where the file `mypackages.nix` contains
 
 ```
 let
@@ -46,7 +57,9 @@ let
   myTex = with pkgs; texlive.combine {
     inherit (texlive) scheme-medium pdfcrop;
   };
-in [
+in with pkgs; [
+  hugo 
+  julia 
   myTex
 ]
 ```
