@@ -44,8 +44,8 @@ let
   julia_15 = pkgs.stdenv.mkDerivation {
     name = "julia_15";
     src = pkgs.fetchurl {
-      url = "https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.0-linux-x86_64.tar.gz";
-      sha256 = "14fvrpgdqm1mgq112fpqwgna9f0fib97a4l6k3hgqjj7z1vgcymy";
+      url = "https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-1.5.2-linux-x86_64.tar.gz";
+      sha256 = "0c26b11qy4csws6vvi27lsl0nmqszaf7lk1ya0jrg8zgvkx099vd";
     };
     installPhase = ''
       mkdir $out
