@@ -31,7 +31,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache install Nix packages
-      uses: nix-actions/cache-install@v1.0.6
+      uses: rikhuijzer/cache-install@v1.0.6
       with:
         key: nix-${{ hashFiles('mypackages.nix') }}
         nix_file: 'mypackages.nix'
@@ -64,5 +64,5 @@ in with pkgs; [
 ]
 ```
 
-[tests-img]: https://github.com/nix-actions/cache-install/workflows/test/badge.svg
-[tests-url]: https://github.com/nix-actions/cache-install/actions
+[tests-img]: https://github.com/rikhuijzer/cache-install/workflows/test/badge.svg
+[tests-url]: https://github.com/rikhuijzer/cache-install/actions
