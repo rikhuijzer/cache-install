@@ -42,7 +42,7 @@ function install_nix {
 
     # macOS needs certificates hints
     cert_file=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
-    echo "::set-env name=NIX_SSL_CERT_FILE::$cert_file"
+    echo "NIX_SSL_CERT_FILE=$cert_file" >> $GITHUB_ENV
     export NIX_SSL_CERT_FILE=$cert_file
     sudo launchctl setenv NIX_SSL_CERT_FILE "$cert_file"
   fi
@@ -60,10 +60,8 @@ function install_via_nix {
 }
 
 function set_paths {
-  # These strange statements are called workflow commands for GitHub Actions.
-  # and seem to be only available outside of this Action.
-  echo "::add-path::/nix/var/nix/profiles/per-user/$USER/profile/bin"
-  echo "::add-path::/nix/var/nix/profiles/default/bin"
+  echo "/nix/var/nix/profiles/per-user/$USER/profile/bin" >> $GITHUB_PATH
+  echo "/nix/var/nix/profiles/default/bin" >> $GITHUB_PATH
 }
 
 function set_nix_path {
@@ -73,7 +71,7 @@ function set_nix_path {
   else
     INPUT_NIX_PATH="/nix/var/nix/profiles/per-user/root/channels"
   fi
-  echo "::set-env name=NIX_PATH::${INPUT_NIX_PATH}"
+  echo "NIX_PATH=${INPUT_NIX_PATH}" >> $GITHUB_ENV
 }
 
 function prepare {
