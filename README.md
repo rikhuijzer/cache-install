@@ -31,7 +31,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Cache install Nix packages
-      uses: rikhuijzer/cache-install@v1.0.6
+      uses: rikhuijzer/cache-install@v1
       with:
         key: nix-${{ hashFiles('mypackages.nix') }}
         nix_file: 'mypackages.nix'
