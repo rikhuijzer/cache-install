@@ -54,7 +54,7 @@ function install_via_nix {
     PATH=/nix/var/nix/profiles/default/bin/:$PATH
     nix-env --install --file "$INPUT_NIX_FILE"
   else 
-    echo "File at `nix_file` does not exist"
+    echo "File at nix_file does not exist"
     exit 1
   fi
 }
