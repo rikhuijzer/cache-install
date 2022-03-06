@@ -5,6 +5,8 @@ on:
     branches:
       - master
   pull_request:
+  schedule:
+    - cron: '00 04 * * 6'
 
 jobs:
 
