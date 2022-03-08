@@ -109,3 +109,39 @@ jobs:
 
     - name: Test whether julia.nix is installed 
       run: julia --color=yes -e 'using Pkg; Pkg.add("RCall"); using RCall; R"library(ggplot2)"'
+
+  test-save-restore-keys:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Save cache
+      uses: ./
+      with:
+        key: Test-Restore-Keys-${{ runner.os }}-${{ github.run_id }}-foo
+        nix_file: 'test/simple.nix'
+
+    - name: Test whether simple.nix is installed
+      run: which hello
+
+  test-restore-restore-keys:
+    needs: test-save-restore-keys
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Restore cache
+      uses: ./
+      with:
+        key: Test-Restore-Keys-${{ runner.os }}-${{ github.run_id }}-bar
+        restore-keys: |
+          Test-Restore-Keys-${{ runner.os }}-${{ github.run_id }}-
+        nix_file: 'test/simple.nix'
+
+    - name: Test whether simple.nix is installed
+      run: hello
+
+    - name: Test whether nix-shell is available
+      run: nix-shell -p nix-info --run "nix-info -m"

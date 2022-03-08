@@ -5,6 +5,9 @@ inputs:
   key:
     description: 'An explicit key for restoring and saving the cache'
     required: true
+  restore-keys:
+    description: 'An ordered list of keys to use for restoring the cache if no cache hit occurred for key'
+    required: false
   nix_version:
     description: 'Nix version, defaults to `nixos-unstable`.'
     default: 'nixos-unstable'

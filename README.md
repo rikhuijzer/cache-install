@@ -13,6 +13,7 @@ So, the installed packages are restored from the cache by copying back `/nix/sto
 ## Inputs
 
 - `key` - An explicit key for restoring and saving the cache
+- `restore-keys` - An ordered list of keys to use for restoring the cache if no cache hit occurred for key
 - `nix_version` - Nix version, defaults to `nixos-unstable`
 - `nix_file` - Nix file, defaults to `default.nix`
 
