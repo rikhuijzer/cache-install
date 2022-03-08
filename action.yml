@@ -16,7 +16,7 @@ outputs:
     description: 'A boolean value to indicate an exact match was found for the primary key'
 runs:
   using: 'node12'
-  main: 'src/main.js'
+  main: 'dist/index.js'
 branding:
   icon: 'arrow-down'
   color: 'blue'

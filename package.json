@@ -2,7 +2,10 @@
   "name": "Cache install Nix packages",
   "version": "1.0.8",
   "description": "Use the GitHub Actions cache for Nix packages",
-  "main": "src/index.js",
+  "main": "src/main.js",
+  "scripts": {
+    "package": "ncc build -o dist --source-map"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nix-actions/cache-install.git"
@@ -20,5 +23,8 @@
     "@actions/core": "^1.2.5",
     "@actions/exec": "^1.0.4",
     "@actions/io": "^1.0.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.31.1"
   }
 }
