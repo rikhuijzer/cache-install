@@ -12,13 +12,19 @@ inputs:
     description: 'Nix version, defaults to `nixos-unstable`.'
     default: 'nixos-unstable'
   nix_file:
-    description: 'Nix file, defaults to `default.nix`.'
-    default: 'default.nix'
+    description: 'Nix file of form `{ pkgs }: []`.'
+    default: default.nix
+  shell_file:
+    description: 'Nix shell file, requires `mkShell { buildInputs }`.'
+    default: shell.nix
+  auto_optimise:
+    description: 'Whether to run `nix-store --optimise` before caching.'
+    default: false
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
 branding:
   icon: 'arrow-down'

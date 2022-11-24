@@ -49,13 +49,24 @@ function install_nix {
 }
 
 function install_via_nix {
-  if [[ -f "$INPUT_NIX_FILE" ]]; then
-    # Path is set correctly by set_paths but that is only available outside of this Action.
-    PATH=/nix/var/nix/profiles/default/bin/:$PATH
-    nix-env --install --file "$INPUT_NIX_FILE"
-  else 
-    echo "File at nix_file does not exist"
-    exit 1
+  # Path is set correctly by set_paths but that is only available outside of this Action.
+  PATH=/nix/var/nix/profiles/default/bin/:$PATH
+
+  if [[ "$INPUT_NIX_FILE" != "" ]]; then
+    if [[ -f "$INPUT_NIX_FILE" ]]; then
+      nix-env --install --file "$INPUT_NIX_FILE"
+    else
+      echo "File at nix_file does not exist, skipping..."
+    fi
+  fi
+
+  if [[ "$INPUT_SHELL_FILE" != "" ]]; then
+    if [[ -f "$INPUT_SHELL_FILE" ]]; then
+      local path=$(realpath "$INPUT_SHELL_FILE")
+      nix-env --install -E "{ ... }: (import ${path} {}).buildInputs"
+    else
+      echo "File at shell_file does not exist, skipping..."
+    fi
   fi
 }
 
@@ -79,6 +90,13 @@ function prepare {
   sudo chown --verbose "$USER:" /nix 
 }
 
+function prepare_save {
+  if [[ "$INPUT_AUTO_OPTIMISE" != false ]]; then
+    echo "Optimising Nix store..."
+    nix-store --optimise
+  fi
+}
+
 function undo_prepare {
   sudo rm -rf /nix
 }
@@ -96,6 +114,7 @@ elif [ "$TASK" == "install-from-cache" ]; then
   set_nix_path
   set_paths
 elif [ "$TASK" == "prepare-save" ]; then
+  prepare_save
   prepare
 else
   echo "Unknown argument given to core.sh: $TASK"
