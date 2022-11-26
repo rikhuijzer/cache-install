@@ -19,7 +19,7 @@ So, the installed packages are restored from the cache by copying back `/nix/sto
 
 ## Example workflow
 
-```
+```yml
 name: latex
 
 on: push
@@ -49,7 +49,7 @@ jobs:
 
 where the file `mypackages.nix` contains
 
-```
+```nix
 let
   # Pinning explicitly to 20.03.
   rev = "5272327b81ed355bbed5659b8d303cf2979b6953";
