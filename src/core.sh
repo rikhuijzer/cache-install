@@ -34,7 +34,7 @@ function install_nix {
     INPUT_NIX_PATH="/nix/var/nix/profiles/per-user/root/channels"
   fi
 
-  sh <(curl --silent --retry 5 --retry-connrefused -L "${INPUT_INSTALL_URL:-https://nixos.org/nix/install}") \
+  sh <(curl --silent --retry 5 --retry-connrefused -L "${INPUT_NIX_INSTALL_URL}") \
     "${installer_options[@]}"
 
   if [[ $OSTYPE =~ darwin ]]; then

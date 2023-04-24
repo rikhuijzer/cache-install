@@ -14,6 +14,9 @@ inputs:
   nix_file:
     description: 'Nix file, defaults to `default.nix`.'
     default: 'default.nix'
+  nix_install_url:
+    description: 'Install URL for the Nix package manager; obtain newest via https://nixos.org/nix/install.'
+    default: 'https://releases.nixos.org/nix/nix-2.15.0/install'
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
@@ -44,7 +47,6 @@ runs:
           /home/${{ env.USER }}/.nix-profile/bin/
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
-
     - name: Set cache-hit output
       shell: bash
       run: echo "cache-hit=$CACHE_HIT" >> $GITHUB_OUTPUT
@@ -66,6 +68,7 @@ runs:
       env:
         INPUT_NIX_FILE: ${{ inputs.nix_file }}
         INPUT_NIX_VERSION: ${{ inputs.nix_version }}
+        INPUT_NIX_INSTALL_URL: ${{ inputs.nix_install_url }}
 
     - name: Save cache
       uses: actions/cache/save@v3
