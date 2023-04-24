@@ -162,12 +162,12 @@ let
     expat
     gnome2.GConf
     nss
-    
+
   ];
 
   env_vars = ''
     export EXTRA_CCFLAGS="-I/usr/include"
-    
+
     # Points RCall to `libR.so`.
     export LD_LIBRARY_PATH="${pkgs.R}/lib/R/lib:$LD_LIBRARY_PATH"
     # Ensure that RCall uses the same R version as used by `libR.so`.

@@ -53,7 +53,7 @@ function install_via_nix {
     # Path is set correctly by set_paths but that is only available outside of this Action.
     PATH=/nix/var/nix/profiles/default/bin/:$PATH
     nix-env --install --file "$INPUT_NIX_FILE"
-  else 
+  else
     echo "File at nix_file does not exist"
     exit 1
   fi
@@ -62,6 +62,7 @@ function install_via_nix {
 function set_paths {
   echo "/nix/var/nix/profiles/per-user/$USER/profile/bin" >> $GITHUB_PATH
   echo "/nix/var/nix/profiles/default/bin" >> $GITHUB_PATH
+  echo "/home/$USER/.nix-profile/bin" >> $GITHUB_PATH
 }
 
 function set_nix_path {
@@ -75,6 +76,7 @@ function set_nix_path {
 }
 
 function prepare {
+  echo "Preparing restore"
   sudo mkdir -p --verbose /nix
   sudo chown --verbose "$USER:" /nix 
 }

@@ -17,9 +17,63 @@ inputs:
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
-runs:
-  using: 'node12'
-  main: 'dist/index.js'
 branding:
   icon: 'arrow-down'
   color: 'blue'
+runs:
+  using: 'composite'
+  steps:
+    - name: Prepare for restoring cache
+      shell: bash
+      run: ./dist/core.sh "prepare-restore"
+
+    - name: Pass USER to GitHub Action
+      id: user
+      shell: bash
+      run: echo "USER=$USER" >> $GITHUB_ENV
+
+    - name: Restore cache
+      id: cache
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /nix/store/
+          /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
+          /nix/var/nix/profiles/default/bin/
+          /nix/var/nix/profiles/per-user/root/channels/
+          /home/${{ env.USER }}/.nix-profile/bin/
+        key: ${{ inputs.key }}
+        restore-keys: ${{ inputs.restore-keys }}
+
+    - name: Set cache-hit output
+      shell: bash
+      run: echo "cache-hit=$CACHE_HIT" >> $GITHUB_OUTPUT
+      env:
+        CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+
+    - name: Install with cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: ./dist/core.sh "install-from-cache"
+
+    - name: Install without cache
+      # Use `!= 'true'` because `cache-hit` is not set if no cache was restored.
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+          ./dist/core.sh "install-with-nix"
+          ./dist/core.sh "prepare-save"
+      env:
+        INPUT_NIX_FILE: ${{ inputs.nix_file }}
+        INPUT_NIX_VERSION: ${{ inputs.nix_version }}
+
+    - name: Save cache
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          /nix/store/
+          /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
+          /nix/var/nix/profiles/default/bin/
+          /nix/var/nix/profiles/per-user/root/channels/
+          /home/${{ env.USER }}/.nix-profile/bin/
+        key: ${{ inputs.key }}
