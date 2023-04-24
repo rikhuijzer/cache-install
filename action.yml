@@ -39,12 +39,16 @@ runs:
       run: echo "cache-hit=${{ steps.cache-restore.outputs.cache-hit }}" >> $GITHUB_OUTPUT
     - shell: bash
       run: |
+        echo "cache-hit: ${{ steps.cache-restore.outputs.cache-hit }}"
         if [ "${{ steps.cache-restore.outputs.cache-hit }}" = "true" ]; then
           ./dist/core.sh "install-from-cache"
         else
           ./dist/core.sh "install-with-nix"
           ./dist/core.sh "prepare-save"
         fi
+      env:
+        INPUT_NIX_FILE: ${{ inputs.nix_file }}
+        INPUT_NIX_VERSION: ${{ inputs.nix_version }}
     - uses: actions/cache/save@v3
       with:
         path: |
