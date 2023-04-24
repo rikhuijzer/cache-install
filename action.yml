@@ -23,9 +23,12 @@ branding:
 runs:
   using: 'composite'
   steps:
-    - shell: bash
+    - name: Prepare for restoring cache
+      shell: bash
       run: ./dist/core.sh "prepare-restore"
-    - id: cache
+
+    - name: Restore cache
+      id: cache
       uses: actions/cache/restore@v3
       with:
         path: |
@@ -35,24 +38,30 @@ runs:
           "/nix/var/nix/profiles/per-user/root/channels/"
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
-    - shell: bash
+
+    - name: Set cache-hit output
+      shell: bash
       run: echo "cache-hit=$CACHE_HIT" >> $GITHUB_OUTPUT
       env:
         CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
-    - shell: bash
+
+    - name: Install with cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: ./dist/core.sh "install-from-cache"
+
+    - name: Install without cache
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
       run: |
-        echo "cache-hit: $CACHE_HIT"
-        if [ "${{ steps.cache.outputs.cache-hit }}" = "true" ]; then
-          ./dist/core.sh "install-from-cache"
-        else
           ./dist/core.sh "install-with-nix"
           ./dist/core.sh "prepare-save"
-        fi
       env:
-        CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
         INPUT_NIX_FILE: ${{ inputs.nix_file }}
         INPUT_NIX_VERSION: ${{ inputs.nix_version }}
-    - uses: actions/cache/save@v3
+
+    - name: Save cache
+      uses: actions/cache/save@v3
       with:
         path: |
           "/nix/store/"

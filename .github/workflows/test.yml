@@ -44,7 +44,7 @@ jobs:
     - name: Test whether nix-shell is available
       run: nix-shell -p nix-info --run "nix-info -m"
 
-      
+
 
   test-save-latex:
     runs-on: ubuntu-latest
