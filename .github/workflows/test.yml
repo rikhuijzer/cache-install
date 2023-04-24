@@ -42,7 +42,7 @@ jobs:
     - name: Test whether output is set
       shell: bash
       run: |
-        if [[ "${{ steps.cache.outputs.cache-hit" = "true" ]]; then
+        if [[ "${{ steps.cache.outputs.cache-hit }}" = "true" ]]; then
           echo "Output is set correctly"
         else
           echo "Output is not set correctly"
