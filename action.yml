@@ -36,10 +36,12 @@ runs:
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
     - shell: bash
-      run: echo "cache-hit=${{ steps.cache-restore.outputs.cache-hit }}" >> $GITHUB_OUTPUT
+      run: echo "cache-hit=$CACHE_HIT" >> $GITHUB_OUTPUT
+      env:
+        CACHE_HIT: ${{ steps.cache-restore.outputs.cache-hit }}
     - shell: bash
       run: |
-        echo "cache-hit: ${{ steps.cache-restore.outputs.cache-hit }}"
+        echo "cache-hit: $CACHE_HIT"
         if [ "${{ steps.cache-restore.outputs.cache-hit }}" = "true" ]; then
           ./dist/core.sh "install-from-cache"
         else
@@ -47,6 +49,7 @@ runs:
           ./dist/core.sh "prepare-save"
         fi
       env:
+        CACHE_HIT: ${{ steps.cache-restore.outputs.cache-hit }}
         INPUT_NIX_FILE: ${{ inputs.nix_file }}
         INPUT_NIX_VERSION: ${{ inputs.nix_version }}
     - uses: actions/cache/save@v3
