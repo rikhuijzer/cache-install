@@ -39,7 +39,7 @@ runs:
       run: echo "cache-hit=${{ steps.cache-restore.outputs.cache-hit }}" >> $GITHUB_OUTPUT
     - shell: bash
       run: |
-        if [ "${{ steps.cache-restore.outputs.cache-hit" = "true" ]; then
+        if [ "${{ steps.cache-restore.outputs.cache-hit }}" = "true" ]; then
           ./dist/core.sh "install-from-cache"
         else
           ./dist/core.sh "install-with-nix"
