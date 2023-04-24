@@ -41,6 +41,7 @@ runs:
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
+          /home/${{ env.USER }}/.nix-profile/bin/
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
 
@@ -74,4 +75,5 @@ runs:
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
+          /home/${{ env.USER }}/.nix-profile/bin/
         key: ${{ inputs.key }}

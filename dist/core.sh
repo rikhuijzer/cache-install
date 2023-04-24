@@ -62,7 +62,7 @@ function install_via_nix {
 function set_paths {
   echo "/nix/var/nix/profiles/per-user/$USER/profile/bin" >> $GITHUB_PATH
   echo "/nix/var/nix/profiles/default/bin" >> $GITHUB_PATH
-  echo "/run/current-system/sw/bin" >> $GITHUB_PATH
+  echo "/home/$USER/.nix-profile/bin" >> $GITHUB_PATH
 }
 
 function set_nix_path {
