@@ -70,6 +70,10 @@ function set_paths {
   echo "/home/$USER/.nix-profile/bin" >> $GITHUB_PATH
 }
 
+function set_nix_profile_symlink {
+  ln -v -s "/nix/var/nix/profiles/per-user/$USER/profile/bin" "/home/$USER/.nix-profile/bin"
+}
+
 function set_nix_path {
   echo "Running set_nix_path from core.sh"
 
@@ -103,10 +107,12 @@ elif [ "$TASK" == "install-with-nix" ]; then
   set_nix_path
   install_nix
   set_paths
+  set_nix_profile_symlink
   install_via_nix
 elif [ "$TASK" == "install-from-cache" ]; then
   set_nix_path
   set_paths
+  set_nix_profile_symlink
 elif [ "$TASK" == "prepare-save" ]; then
   prepare
 else
