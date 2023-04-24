@@ -3,7 +3,7 @@
 set -e
 
 function install_nix {
-  echo "Running `install_nix` from `core.sh`"
+  echo "Running install_nix from core.sh"
   # Source: https://github.com/cachix/install-nix-action/blob/master/lib/install-nix.sh
   if [ -d "/nix/store" ]; then
       echo "The folder /nix/store exists; assuming Nix was restored from cache"
@@ -50,7 +50,7 @@ function install_nix {
 }
 
 function install_via_nix {
-  echo "Running `install_via_nix` from `core.sh`"
+  echo "Running install_via_nix from core.sh"
 
   if [[ -f "$INPUT_NIX_FILE" ]]; then
     # Path is set correctly by set_paths but that is only available outside of this Action.
@@ -63,7 +63,7 @@ function install_via_nix {
 }
 
 function set_paths {
-  echo "Running `set_paths` from `core.sh`"
+  echo "Running set_paths from core.sh"
 
   echo "/nix/var/nix/profiles/per-user/$USER/profile/bin" >> $GITHUB_PATH
   echo "/nix/var/nix/profiles/default/bin" >> $GITHUB_PATH
@@ -71,7 +71,7 @@ function set_paths {
 }
 
 function set_nix_path {
-  echo "Running `set_nix_path` from `core.sh`"
+  echo "Running set_nix_path from core.sh"
 
   INPUT_NIX_PATH="nixpkgs=channel:$INPUT_NIX_VERSION"
   if [[ "$INPUT_NIX_PATH" != "" ]]; then
@@ -83,14 +83,14 @@ function set_nix_path {
 }
 
 function prepare {
-  echo "Running `prepare` from `core.sh`"
+  echo "Running prepare from core.sh"
 
   sudo mkdir -p --verbose /nix
   sudo chown --verbose "$USER:" /nix
 }
 
 function undo_prepare {
-  echo "Running `undo_prepare` from `core.sh`"
+  echo "Running undo_prepare from core.sh"
 
   sudo rm -rf /nix
 }
