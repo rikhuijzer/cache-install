@@ -22,7 +22,9 @@ jobs:
         key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
         nix_file: 'test/simple.nix'
 
-    - name: Test whether simple.nix is installed 
+    - run: sudo find / -name "hello"
+
+    - name: Test whether simple.nix is installed
       run: which hello
 
   test-restore-simple:
@@ -38,7 +40,7 @@ jobs:
         key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
         nix_file: 'test/simple.nix'
 
-    - name: Test whether simple.nix is installed 
+    - name: Test whether simple.nix is installed
       run: hello
 
     - name: Test whether nix-shell is available
