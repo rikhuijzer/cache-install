@@ -30,9 +30,9 @@ runs:
       with:
         path: |
           "/nix/store/"
-          "/nix/var/nix/profiles/per-user/$USER/profile/bin"
+          "/nix/var/nix/profiles/per-user/$USER/profile/bin/"
           "/nix/var/nix/profiles/default/bin/"
-          "/nix/var/nix/profiles/per-user/root/channels"
+          "/nix/var/nix/profiles/per-user/root/channels/"
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
     - shell: bash
@@ -40,8 +40,16 @@ runs:
     - shell: bash
       run: |
         if [ "${{ steps.cache-restore.outputs.cache-hit" = "true" ]; then
-          ./dist/core.sh "install-with-nix"
-        else
           ./dist/core.sh "install-from-cache"
+        else
+          ./dist/core.sh "install-with-nix"
+          ./dist/core.sh "prepare-save"
         fi
-
+    - uses: actions/cache/save@v3
+      with:
+        path: |
+          "/nix/store/"
+          "/nix/var/nix/profiles/per-user/$USER/profile/bin/"
+          "/nix/var/nix/profiles/default/bin/"
+          "/nix/var/nix/profiles/per-user/root/channels/"
+        key: ${{ inputs.key }}
