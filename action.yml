@@ -1,6 +1,10 @@
 name: 'Cache install Nix packages'
 description: 'Use the GitHub Actions cache for Nix packages'
 author: 'Rik Huijzer'
+branding:
+  icon: 'arrow-down'
+  color: 'blue'
+
 inputs:
   key:
     description: 'An explicit key for restoring and saving the cache'
@@ -17,13 +21,12 @@ inputs:
   nix_install_url:
     description: 'Install URL for the Nix package manager; obtain newest via https://nixos.org/nix/install.'
     default: 'https://releases.nixos.org/nix/nix-2.13.0/install'
+
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
     value: ${{ steps.hit.outputs.cache-hit }}
-branding:
-  icon: 'arrow-down'
-  color: 'blue'
+
 runs:
   using: 'composite'
   steps:
