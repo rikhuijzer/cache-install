@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 set -e
 
@@ -78,7 +78,7 @@ function set_nix_path {
 function prepare {
   echo "Preparing restore"
   sudo mkdir -p --verbose /nix
-  sudo chown --verbose "$USER:" /nix 
+  sudo chown --verbose "$USER:" /nix
 }
 
 function undo_prepare {

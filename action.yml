@@ -25,7 +25,7 @@ runs:
   steps:
     - name: Prepare for restoring cache
       shell: bash
-      run: ./dist/core.sh "prepare-restore"
+      run: ./src/core.sh "prepare-restore"
 
     - name: Pass USER to GitHub Action
       id: user
@@ -54,15 +54,15 @@ runs:
     - name: Install with cache
       if: steps.cache.outputs.cache-hit == 'true'
       shell: bash
-      run: ./dist/core.sh "install-from-cache"
+      run: ./src/core.sh "install-from-cache"
 
     - name: Install without cache
       # Use `!= 'true'` because `cache-hit` is not set if no cache was restored.
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
-          ./dist/core.sh "install-with-nix"
-          ./dist/core.sh "prepare-save"
+          ./src/core.sh "install-with-nix"
+          ./src/core.sh "prepare-save"
       env:
         INPUT_NIX_FILE: ${{ inputs.nix_file }}
         INPUT_NIX_VERSION: ${{ inputs.nix_version }}
