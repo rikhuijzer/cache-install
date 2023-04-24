@@ -22,8 +22,6 @@ jobs:
         key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
         nix_file: 'test/simple.nix'
 
-    - run: ls /run/current-system/sw/bin/
-
     - name: Test whether simple.nix is installed
       run: which hello
 
