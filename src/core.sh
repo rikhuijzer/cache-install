@@ -73,8 +73,7 @@ function set_paths {
 function set_nix_profile_symlink {
   echo "Running set_nix_profile_symlink from core.sh"
 
-  ls -la "/home/$USER"
-
+  rm -rf "/home/$USER/.nix-profile"
   ln -v -s "/nix/var/nix/profiles/per-user/$USER/profile" "/home/$USER/.nix-profile"
 }
 
