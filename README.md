@@ -12,10 +12,15 @@ So, the installed packages are restored from the cache by copying back `/nix/sto
 
 ## Inputs
 
-- `key` - An explicit key for restoring and saving the cache
-- `restore-keys` - An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-- `nix_version` - Nix version, defaults to `nixos-unstable`
-- `nix_file` - Nix file, defaults to `default.nix`
+- `key` - An explicit key for restoring and saving the cache.
+- `restore-keys` - An ordered list of keys to use for restoring the cache if no cache hit occurred for key.
+- `nix_version` - Nix version, defaults to `nixos-unstable`.
+- `nix_file` - Nix file, defaults to `default.nix`.
+- `nix_install_url` - Install URL for the Nix package manager; obtain newest via https://nixos.org/nix/install.
+
+## Outputs
+
+- `cache-hit` - A boolean value to indicate an exact match was found for the primary key.
 
 ## Example workflow
 
@@ -59,8 +64,8 @@ let
     inherit (texlive) scheme-medium pdfcrop;
   };
 in with pkgs; [
-  hugo 
-  julia 
+  hugo
+  julia
   myTex
 ]
 ```
