@@ -1,6 +1,10 @@
 name: 'Cache install Nix packages'
 description: 'Use the GitHub Actions cache for Nix packages'
 author: 'Rik Huijzer'
+branding:
+  icon: 'arrow-down'
+  color: 'blue'
+
 inputs:
   key:
     description: 'An explicit key for restoring and saving the cache'
@@ -17,12 +21,12 @@ inputs:
   nix_install_url:
     description: 'Install URL for the Nix package manager; obtain newest via https://nixos.org/nix/install.'
     default: 'https://releases.nixos.org/nix/nix-2.13.0/install'
+
 outputs:
   cache-hit:
     description: 'A boolean value to indicate an exact match was found for the primary key'
-branding:
-  icon: 'arrow-down'
-  color: 'blue'
+    value: ${{ steps.hit.outputs.cache-hit }}
+
 runs:
   using: 'composite'
   steps:
@@ -47,11 +51,6 @@ runs:
           /home/${{ env.USER }}/.nix-profile/bin/
         key: ${{ inputs.key }}
         restore-keys: ${{ inputs.restore-keys }}
-    - name: Set cache-hit output
-      shell: bash
-      run: echo "cache-hit=$CACHE_HIT" >> $GITHUB_OUTPUT
-      env:
-        CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
 
     - name: Install with cache
       if: steps.cache.outputs.cache-hit == 'true'
@@ -80,3 +79,8 @@ runs:
           /nix/var/nix/profiles/per-user/root/channels/
           /home/${{ env.USER }}/.nix-profile/bin/
         key: ${{ inputs.key }}
+
+    - name: Set cache-hit output
+      id: hit
+      shell: bash
+      run: echo "cache-hit=${{ steps.cache.outputs.cache-hit }}" >> $GITHUB_OUTPUT

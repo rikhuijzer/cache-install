@@ -33,10 +33,21 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Restore cache
+      id: cache
       uses: ./
       with:
         key: Test-Simple-${{ runner.os }}-${{ github.run_id }}
         nix_file: 'test/simple.nix'
+
+    - name: Test whether output is set
+      shell: bash
+      run: |
+        if [[ "${{ steps.cache.outputs.cache-hit }}" = "true" ]]; then
+          echo "Output is set correctly"
+        else
+          echo "Output is not set correctly"
+          exit 1
+        fi
 
     - name: Test whether simple.nix is installed
       run: hello
