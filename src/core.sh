@@ -73,7 +73,7 @@ function set_paths {
 function set_nix_profile_symlink {
   echo "Running set_nix_profile_symlink from core.sh"
 
-  sudo chown --verbose "/home/$USER/.nix-profile"
+  sudo chown --verbose "$USER:" /home/$USER/.nix-profile
   rm -rf "/home/$USER/.nix-profile"
   ln -v -s "/nix/var/nix/profiles/per-user/$USER/profile" "/home/$USER/.nix-profile"
 }
