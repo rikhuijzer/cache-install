@@ -78,7 +78,7 @@ function set_nix_profile_symlink {
       sudo chown --verbose "$USER:" "$NIX_PROFILE_DIR"
       rm -rf "$NIX_PROFILE_DIR"
   fi
-  ln -v -s "/nix/var/nix/profiles/per-user/$USER/profile" "/home/$USER/.nix-profile"
+  ln -v -s "/nix/var/nix/profiles/per-user/$USER/profile" "$NIX_PROFILE_DIR"
 }
 
 function set_nix_path {
