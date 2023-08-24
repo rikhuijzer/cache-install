@@ -70,6 +70,7 @@ runs:
         INPUT_NIX_INSTALL_URL: ${{ inputs.nix_install_url }}
 
     - name: Save cache
+      if: steps.cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
         path: |
