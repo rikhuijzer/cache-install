@@ -51,7 +51,9 @@ jobs:
         fi
 
     - name: Test whether simple.nix is installed
-      run: hello
+      run: |
+        nix-store --gc # Remove invalid store paths
+        hello
 
 
 
@@ -84,7 +86,9 @@ jobs:
         nix_file: 'test/latex.nix'
 
     - name: Test whether latex.nix is installed
-      run: which pdfcrop
+      run: |
+        nix-store --gc # Remove invalid store paths
+        which pdfcrop
 
 
 
@@ -119,4 +123,6 @@ jobs:
         nix_file: 'test/simple.nix'
 
     - name: Test whether simple.nix is installed
-      run: hello
+      run: |
+        nix-store --gc # Remove invalid store paths
+        hello

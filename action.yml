@@ -45,6 +45,8 @@ runs:
       with:
         path: |
           /nix/store/
+          /nix/var/nix/db/db.sqlite
+          /nix/var/nix/db/schema
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
@@ -75,6 +77,8 @@ runs:
       with:
         path: |
           /nix/store/
+          /nix/var/nix/db/db.sqlite
+          /nix/var/nix/db/schema
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
