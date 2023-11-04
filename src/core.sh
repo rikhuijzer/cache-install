@@ -105,6 +105,13 @@ function undo_prepare {
   sudo rm -rf /nix
 }
 
+function clean_nix_store {
+  PATH=/nix/var/nix/profiles/default/bin/:$PATH
+
+  nix-store --gc
+  nix-store --optimise
+}
+
 TASK="$1"
 if [ "$TASK" == "prepare-restore" ]; then
   prepare
@@ -121,6 +128,7 @@ elif [ "$TASK" == "install-from-cache" ]; then
   set_nix_profile_symlink
 elif [ "$TASK" == "prepare-save" ]; then
   prepare
+  clean_nix_store
 else
   echo "Unknown argument given to core.sh: $TASK"
   exit 1
