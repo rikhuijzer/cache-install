@@ -37,6 +37,10 @@ function install_nix {
   sh <(curl --silent --retry 5 --retry-connrefused -L "${INPUT_NIX_INSTALL_URL}") \
     "${installer_options[@]}"
 
+  # Create the user profile
+  sudo mkdir "/nix/var/nix/profiles/per-user/$USER"
+  sudo chown $USER "/nix/var/nix/profiles/per-user/$USER"
+
   if [[ $OSTYPE =~ darwin ]]; then
     # Disable spotlight indexing of /nix to speed up performance
     sudo mdutil -i off /nix
