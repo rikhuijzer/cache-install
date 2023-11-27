@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Save cache
       uses: ./
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Restore cache
       id: cache
@@ -51,7 +51,9 @@ jobs:
         fi
 
     - name: Test whether simple.nix is installed
-      run: hello
+      run: |
+        nix-store --gc # Remove invalid store paths
+        hello
 
 
 
@@ -59,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Save cache
       uses: ./
@@ -75,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Restore cache
       uses: ./
@@ -84,7 +86,9 @@ jobs:
         nix_file: 'test/latex.nix'
 
     - name: Test whether latex.nix is installed
-      run: which pdfcrop
+      run: |
+        nix-store --gc # Remove invalid store paths
+        which pdfcrop
 
 
 
@@ -92,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Save cache
       uses: ./
@@ -108,7 +112,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Restore cache
       uses: ./
@@ -119,4 +123,6 @@ jobs:
         nix_file: 'test/simple.nix'
 
     - name: Test whether simple.nix is installed
-      run: hello
+      run: |
+        nix-store --gc # Remove invalid store paths
+        hello

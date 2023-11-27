@@ -37,6 +37,10 @@ function install_nix {
   sh <(curl --silent --retry 5 --retry-connrefused -L "${INPUT_NIX_INSTALL_URL}") \
     "${installer_options[@]}"
 
+  # Create the user profile
+  sudo mkdir "/nix/var/nix/profiles/per-user/$USER"
+  sudo chown $USER "/nix/var/nix/profiles/per-user/$USER"
+
   if [[ $OSTYPE =~ darwin ]]; then
     # Disable spotlight indexing of /nix to speed up performance
     sudo mdutil -i off /nix
@@ -105,6 +109,13 @@ function undo_prepare {
   sudo rm -rf /nix
 }
 
+function clean_nix_store {
+  PATH=/nix/var/nix/profiles/default/bin/:$PATH
+
+  nix-store --gc
+  nix-store --optimise
+}
+
 TASK="$1"
 if [ "$TASK" == "prepare-restore" ]; then
   prepare
@@ -121,6 +132,7 @@ elif [ "$TASK" == "install-from-cache" ]; then
   set_nix_profile_symlink
 elif [ "$TASK" == "prepare-save" ]; then
   prepare
+  clean_nix_store
 else
   echo "Unknown argument given to core.sh: $TASK"
   exit 1

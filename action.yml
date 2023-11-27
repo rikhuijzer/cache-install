@@ -20,7 +20,7 @@ inputs:
     default: 'default.nix'
   nix_install_url:
     description: 'Install URL for the Nix package manager; obtain newest via https://nixos.org/nix/install.'
-    default: 'https://releases.nixos.org/nix/nix-2.13.0/install'
+    default: 'https://releases.nixos.org/nix/nix-2.19.1/install'
 
 outputs:
   cache-hit:
@@ -45,6 +45,8 @@ runs:
       with:
         path: |
           /nix/store/
+          /nix/var/nix/db/db.sqlite
+          /nix/var/nix/db/schema
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
@@ -75,6 +77,8 @@ runs:
       with:
         path: |
           /nix/store/
+          /nix/var/nix/db/db.sqlite
+          /nix/var/nix/db/schema
           /nix/var/nix/profiles/per-user/${{ env.USER }}/profile/bin/
           /nix/var/nix/profiles/default/bin/
           /nix/var/nix/profiles/per-user/root/channels/
